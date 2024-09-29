@@ -15,7 +15,7 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
 hands = mp_hands.Hands(static_image_mode=False, min_detection_confidence=0.3)  # Static image mode = False cho video trực tiếp
-labels_dict = {0: "A", 1: "B", 2: "C"}  # Ví dụ về nhãn
+labels_dict = {"Hello":"Hello","Like":"Like","Okey":"Okey","I love you":"I love you"}  # Ví dụ về nhãn
 
 while True:
     data_aux = []
@@ -58,7 +58,7 @@ while True:
             y2 = int(max(y_) * H)
 
             prediction = model.predict([np.asarray(data_aux)])
-            predicted_character = labels_dict[int(prediction[0])]
+            predicted_character = labels_dict[(prediction[0])]
 
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
             cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,

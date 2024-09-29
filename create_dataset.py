@@ -35,11 +35,10 @@ for dir_ in os.listdir(DATA_DIR):
                     data_aux.append(x)
                     data_aux.append(y)
 
-            # Kiểm tra số lượng landmark cho mỗi ảnh
-            if len(data_aux) == 84:  # Nếu có 2 bàn tay (84 điểm)
+            if len(data_aux) == 84:  # Nếu có 2 bàn tay (84 giá trị)
                 data_84.append(data_aux)
                 labels_84.append(dir_)
-            elif len(data_aux) == 42:  # Nếu có 1 bàn tay (42 điểm)
+            elif len(data_aux) == 42:  # Nếu có 1 bàn tay (42 giá trị)
                 data_42.append(data_aux)
                 labels_42.append(dir_)
             else:
@@ -48,9 +47,30 @@ for dir_ in os.listdir(DATA_DIR):
 print(f"Tổng số mẫu dữ liệu với 1 bàn tay: {len(data_42)}")
 print(f"Tổng số mẫu dữ liệu với 2 bàn tay: {len(data_84)}")
 
-# Lưu dữ liệu vào file pickle
-with open("data_42.pickle", 'wb') as f:
-    pickle.dump({'data': data_42, 'labels': labels_42}, f)
+def load_existing_data(file_name):
+    if os.path.exists(file_name):
+        with open(file_name, 'rb') as f:
+            return pickle.load(f)
+    return {'data': [], 'labels': []}
 
-with open("data_84.pickle", 'wb') as f:
-    pickle.dump({'data': data_84, 'labels': labels_84}, f)
+# Append new data and labels to the existing structure
+def append_data_to_file(file_name, new_data, new_labels):
+    existing_data = load_existing_data(file_name)
+    
+    # Append new data
+    existing_data['data'].extend(new_data)
+    existing_data['labels'].extend(new_labels)
+    
+    # Save back to the file
+    with open(file_name, 'wb') as f:
+        pickle.dump(existing_data, f)
+
+# Example usage
+append_data_to_file("data_42.pickle", data_42, labels_42)
+append_data_to_file("data_84.pickle", data_84, labels_84)
+# # Lưu dữ liệu vào file pickle
+# with open("data_42.pickle", 'wb') as f:
+#     pickle.dump({'data': data_42, 'labels': labels_42}, f)
+
+# with open("data_84.pickle", 'wb') as f:
+#     pickle.dump({'data': data_84, 'labels': labels_84}, f)

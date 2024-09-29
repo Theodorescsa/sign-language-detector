@@ -6,13 +6,15 @@ if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR)
 number_of_classes = 3
 dataset_size = 100
+string_sign = input("Mời nhập tên kí hiệu muốn thêm: ")
+list_sign = string_sign.split(",")
 
 cap = cv2.VideoCapture(0)
-for j in range(number_of_classes):
-    if not os.path.exists(os.path.join(DATA_DIR, str(j))):
-        os.makedirs(os.path.join(DATA_DIR, str(j)))
+for j in range(len(list_sign)):
+    if not os.path.exists(os.path.join(DATA_DIR, list_sign[j])):
+        os.makedirs(os.path.join(DATA_DIR, list_sign[j]))
 
-    print('Collecting data for class {}'.format(j))
+    print('Collecting data for class {}'.format(list_sign[j]))
 
     done = False
     while True:
@@ -31,7 +33,7 @@ for j in range(number_of_classes):
         frame = cv2.flip(frame, 1)
         cv2.imshow('frame', frame)
         cv2.waitKey(25)
-        cv2.imwrite(os.path.join(DATA_DIR, str(j), '{}.jpg'.format(counter)), frame)
+        cv2.imwrite(os.path.join(DATA_DIR, list_sign[j], '{}.jpg'.format(counter)), frame)
         counter += 1
 
 cap.release()
